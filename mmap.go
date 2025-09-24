@@ -1,6 +1,6 @@
 
 
-package cdb
+package cdb_mmap
 
 
 import "errors"

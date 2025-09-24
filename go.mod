@@ -1,10 +1,9 @@
-module github.com/bsergean/go-cdb-lib
+module github.com/bsergean/cdb_mmap
 
 go 1.24.7
 
 require (
 	github.com/Pallinder/go-randomdata v1.1.0
-	github.com/colinmarc/cdb v0.0.0-20190223170904-60f317823f70
 	github.com/stretchr/testify v1.3.0
 )
 

@@ -1,4 +1,4 @@
-package cdb_test
+package cdb_mmap_test
 
 import (
 	"hash/fnv"
@@ -24,7 +24,7 @@ func fnvHash(data []byte) uint32 {
 	return h.Sum32()
 }
 
-func testWritesReadable(t *testing.T, writer *cdb.Writer) {
+func testWritesReadable(t *testing.T, writer *cdb_mmap.Writer) {
 	expected := make([][][]byte, 0, 100)
 	for i := 0; i < cap(expected); i++ {
 		key := []byte(strconv.Itoa(i))
@@ -51,7 +51,7 @@ func TestWritesReadable(t *testing.T) {
 	require.NoError(t, err)
 	defer os.Remove(f.Name())
 
-	writer, err := cdb.NewWriter(f, nil)
+	writer, err := cdb_mmap.NewWriter(f, nil)
 	require.NoError(t, err)
 	require.NotNil(t, writer)
 
@@ -63,14 +63,14 @@ func TestWritesReadableFnv(t *testing.T) {
 	require.NoError(t, err)
 	defer os.Remove(f.Name())
 
-	writer, err := cdb.NewWriter(f, fnvHash)
+	writer, err := cdb_mmap.NewWriter(f, fnvHash)
 	require.NoError(t, err)
 	require.NotNil(t, writer)
 
 	testWritesReadable(t, writer)
 }
 
-func testWritesRandom(t *testing.T, writer *cdb.Writer) {
+func testWritesRandom(t *testing.T, writer *cdb_mmap.Writer) {
 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
 	records := make([][][]byte, 0, 1000)
 	seenKeys := make(map[string]bool)
@@ -110,7 +110,7 @@ func TestWritesRandom(t *testing.T) {
 	require.NoError(t, err)
 	defer os.Remove(f.Name())
 
-	writer, err := cdb.NewWriter(f, nil)
+	writer, err := cdb_mmap.NewWriter(f, nil)
 	require.NoError(t, err)
 	require.NotNil(t, writer)
 
@@ -122,14 +122,14 @@ func TestWritesRandomFnv(t *testing.T) {
 	require.NoError(t, err)
 	defer os.Remove(f.Name())
 
-	writer, err := cdb.NewWriter(f, fnvHash)
+	writer, err := cdb_mmap.NewWriter(f, fnvHash)
 	require.NoError(t, err)
 	require.NotNil(t, writer)
 
 	testWritesRandom(t, writer)
 }
 
-func benchmarkPut(b *testing.B, writer *cdb.Writer) {
+func benchmarkPut(b *testing.B, writer *cdb_mmap.Writer) {
 	random := rand.New(rand.NewSource(time.Now().UnixNano()))
 	stringType := reflect.TypeOf("")
 	b.ResetTimer()
@@ -151,7 +151,7 @@ func BenchmarkPut(b *testing.B) {
 		os.Remove(f.Name())
 	}()
 
-	writer, err := cdb.NewWriter(f, nil)
+	writer, err := cdb_mmap.NewWriter(f, nil)
 	require.NoError(b, err)
 
 	benchmarkPut(b, writer)
@@ -165,14 +165,14 @@ func BenchmarkPutFnv(b *testing.B) {
 		os.Remove(f.Name())
 	}()
 
-	writer, err := cdb.NewWriter(f, fnvHash)
+	writer, err := cdb_mmap.NewWriter(f, fnvHash)
 	require.NoError(b, err)
 
 	benchmarkPut(b, writer)
 }
 
 func ExampleWriter() {
-	writer, err := cdb.Create("/tmp/example.cdb")
+	writer, err := cdb_mmap.Create("/tmp/example.cdb")
 	if err != nil {
 		log.Fatal(err)
 	}

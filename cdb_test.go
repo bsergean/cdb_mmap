@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bsergean/go-cdb-lib"
+	"github.com/bsergean/cdb_mmap"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -27,7 +27,7 @@ var expectedRecords = [][][]byte{
 }
 
 func TestGet(t *testing.T) {
-	db, err := cdb.Open("./test/test.cdb")
+	db, err := cdb_mmap.Open("./test/test.cdb")
 	require.NoError(t, err)
 	require.NotNil(t, db)
 
@@ -47,7 +47,7 @@ func TestClosesFile(t *testing.T) {
 	f, err := os.Open("./test/test.cdb")
 	require.NoError(t, err)
 
-	db, err := cdb.New(f, nil)
+	db, err := cdb_mmap.New(f, nil)
 	require.NoError(t, err)
 	require.NotNil(t, db)
 
@@ -59,7 +59,7 @@ func TestClosesFile(t *testing.T) {
 }
 
 func BenchmarkGet(b *testing.B) {
-	db, _ := cdb.Open("./test/test.cdb")
+	db, _ := cdb_mmap.Open("./test/test.cdb")
 	b.ResetTimer()
 
 	rand.Seed(time.Now().UnixNano())
@@ -70,7 +70,7 @@ func BenchmarkGet(b *testing.B) {
 }
 
 func Example() {
-	writer, err := cdb.Create("/tmp/example.cdb")
+	writer, err := cdb_mmap.Create("/tmp/example.cdb")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -97,7 +97,7 @@ func Example() {
 }
 
 func ExampleCDB() {
-	db, err := cdb.Open("./test/test.cdb")
+	db, err := cdb_mmap.Open("./test/test.cdb")
 	if err != nil {
 		log.Fatal(err)
 	}

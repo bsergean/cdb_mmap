@@ -12,7 +12,7 @@ import (
 )
 
 func TestIterator(t *testing.T) {
-	db, err := cdb.Open("./test/test.cdb")
+	db, err := cdb_mmap.Open("./test/test.cdb")
 	require.NoError(t, err)
 	require.NotNil(t, db)
 
@@ -31,7 +31,7 @@ func TestIterator(t *testing.T) {
 }
 
 func BenchmarkIterator(b *testing.B) {
-	db, _ := cdb.Open("./test/test.cdb")
+	db, _ := cdb_mmap.Open("./test/test.cdb")
 	iter := db.Iter()
 	b.ResetTimer()
 
@@ -43,7 +43,7 @@ func BenchmarkIterator(b *testing.B) {
 }
 
 func ExampleIterator() {
-	db, err := cdb.Open("./test/test.cdb")
+	db, err := cdb_mmap.Open("./test/test.cdb")
 	if err != nil {
 		log.Fatal(err)
 	}

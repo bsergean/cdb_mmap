@@ -1,4 +1,4 @@
-package cdb
+package cdb_mmap
 
 import (
 	"encoding/binary"
